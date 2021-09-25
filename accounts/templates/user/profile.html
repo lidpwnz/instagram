@@ -130,36 +130,38 @@
     <main class="mt-5">
 
         <div class="container">
-                <div class="row">
+            <div class="row">
 
-                    {% for post in profile.user.posts.all %}
-                        <div class="col-4">
-                            <div class="gallery-item" tabindex="0">
+                {% for post in profile.user.posts.all %}
+                    <div class="col-4">
+                        <div class="gallery-item" tabindex="0">
 
+                            <a href="">
                                 <img src="{{ post.img.url }}"
                                      class="gallery-image" alt="">
 
                                 <div class="gallery-item-info">
 
                                     <ul class="px-0 py-0">
-                                        <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
+                                        <li class="gallery-item-likes text-light"><span class="visually-hidden">Likes:</span><i
                                                 class="fas fa-heart" aria-hidden="true"></i> {{ post.likes_count }}
                                         </li>
-                                        <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i
+                                        <li class="gallery-item-comments text-light"><span class="visually-hidden">Comments:</span><i
                                                 class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
                                         </li>
                                     </ul>
 
                                 </div>
+                            </a>
 
-                            </div>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
-            <!-- End of gallery -->
+        </div>
+        <!-- End of gallery -->
 
-            <div class="loader"></div>
+        <div class="loader"></div>
 
         <!-- End of container -->
 
