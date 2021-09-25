@@ -19,15 +19,75 @@
             width: 170px;
             height: 170px;
         }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -1rem -1rem;
+            padding-bottom: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            flex: 1 0 22rem;
+            margin: 1rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover .gallery-item-info,
+        .gallery-item:focus .gallery-item-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-item-info {
+            display: none;
+        }
+
+        .gallery-item-info li {
+            display: inline-block;
+            font-size: 1.7rem;
+            font-weight: 600;
+        }
+
+        .gallery-item-likes {
+            margin-right: 2.2rem;
+        }
+
+        .gallery-item-type {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2.5rem;
+            text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+        }
+
+        .fa-clone,
+        .fa-comment {
+            transform: rotateY(180deg);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
     <div class="container">
         <div class="profile">
             <div class="profile-image">
-                <img class="user-avatar" src="{{ user_obj.avatar.url }}"
+                <img class="user-avatar" src="{{ profile.avatar.url }}"
                      alt="avatar">
             </div>
             <div class="profile-user-settings">
-                <h1 class="profile-user-name">{{ user_obj.username }}</h1>
+                <h1 class="profile-user-name">{{ profile.user.username }}</h1>
                 <a class="btn profile-edit-btn" href="">Редактировать профиль</a>
                 <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog"
                                                                                           aria-hidden="true"></i>
@@ -38,17 +98,17 @@
             <div class="profile-stats">
 
                 <ul>
-                    <li><span class="profile-stat-count">{{ user_obj.posts_count }}</span> Публикаций</li>
-                    <li><span class="profile-stat-count">{{ user_obj.followers_count }}</span> Подписчики</li>
-                    <li><span class="profile-stat-count">{{ user_obj.subscribes_count }}</span> Подписки</li>
+                    <li><span class="profile-stat-count">{{ profile.posts_count }}</span> Публикации</li>
+                    <li><span class="profile-stat-count">{{ profile.followers_count }}</span> Подписчики</li>
+                    <li><span class="profile-stat-count">{{ profile.subscribes_count }}</span> Подписки</li>
                 </ul>
 
             </div>
 
             <div class="profile-bio">
 
-                <p><span class="profile-real-name">{{ user_obj.get_full_name }}</span>
-                    {{ user_obj.info }}
+                <p><span class="profile-real-name">{{ profile.user.get_full_name }}</span>
+                    {{ profile.info }}
                 </p>
 
             </div>
@@ -64,7 +124,7 @@
         <div class="container">
 
             <div class="gallery">
-                {% for post in user_obj.post_set.all %}
+                {% for post in profile.user.post_set.all %}
                     <div class="gallery-item" tabindex="0">
 
                         <img src="{{ post.img.url }}"

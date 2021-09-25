@@ -17,7 +17,13 @@ class MyLoginView(LoginView):
 class ProfileView(generic.DetailView):
     model = Profile
     template_name = 'user/profile.html'
-    context_object_name = 'user_obj'
+    context_object_name = 'profile'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        print(self.object.user)
+        print(self.object.user.posts.all())
+        return super(ProfileView, self).get(request, *args, **kwargs)
 
 
 class RegisterView(generic.CreateView):

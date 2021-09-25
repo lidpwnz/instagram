@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 class Post(models.Model):
-    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='posts')
     img = models.ImageField(upload_to=settings.POST_PICS_FOLDER)
     description = models.TextField()
     likes_count = models.IntegerField(default=0)
