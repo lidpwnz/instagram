@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="profile">
+            <div class="profile-image">
+                <img class="user-avatar" src="{{ user_obj.avatar.url }}"
+                     alt="avatar">
+            </div>
+            <div class="profile-user-settings">
+                <h1 class="profile-user-name">{{ user_obj.username }}</h1>
+                <a class="btn profile-edit-btn" href="">Редактировать профиль</a>
+                <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i>
+                </button>
+
+            </div>
+
+            <div class="profile-stats">
+
+                <ul>
+                    <li><span class="profile-stat-count">{{ user_obj.posts_count }}</span> Публикаций</li>
+                    <li><span class="profile-stat-count">{{ user_obj.followers_count }}</span> Подписчики</li>
+                    <li><span class="profile-stat-count">{{ user_obj.subscribes_count }}</span> Подписки</li>
+                </ul>
+
+            </div>
+
+            <div class="profile-bio">
+
+                <p><span class="profile-real-name">{{ user_obj.get_full_name }}</span>
+                    {{ user_obj.info }}
+                </p>
+
+            </div>
+
+        </div>
+        <!-- End of profile section -->
+
+    </div>
+    <!-- End of container -->
+
+    <main>
+
+        <div class="container">
+
+            <div class="gallery">
+                {% for post in user_obj.post_set.all %}
+                    <div class="gallery-item" tabindex="0">
+
+                        <img src="{{ post.img.url }}"
+                             class="gallery-image" alt="">
+
+                        <div class="gallery-item-info">
+
+                            <ul>
+                                <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
+                                        class="fas fa-heart" aria-hidden="true"></i> {{ post.likes_count }}
+                                </li>
+                                <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i
+                                        class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- End of gallery -->
+
+            <div class="loader"></div>
+
+        </div>
+        <!-- End of container -->
+
+    </main>
+{% endblock %}
+
+

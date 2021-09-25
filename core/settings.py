@@ -31,15 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'accounts',
     'django.contrib.admin',
-    'instagram'
+    'instagram',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'core.middleware.MyAuthMiddleware'
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -137,3 +139,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 AVATARS_FOLDER = 'user_avatars'
 AVATARS_DEFAULT = f'/{AVATARS_FOLDER}/default_img.jpeg'
+POST_PICS_FOLDER = 'post_pics'
+

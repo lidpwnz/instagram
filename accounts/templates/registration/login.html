@@ -1,127 +1,54 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Title</title>
-</head>
-<body class="main-bg">
-    <span id="root">
-    <section class="section-all">
+{% extends 'base.html' %}
 
-      <!-- 1-Role Main -->
-      <main class="main" role="main">
-        <div class="wrapper">
-          <article class="article">
-            <div class="content">
-              <div class="login-box">
-                <div class="header">
-                  <img class="logo"
-                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png"
-                       alt="Instagram">
-                </div><!-- Header end -->
-                <div class="form-wrap">
-                  <form class="form" action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
 
-                      {% if form.non_field_errors %}
-                        {% for error in form.non_field_errors %}
-                            <div class="alert alert-danger">{{ error }}</div>
-                        {% endfor %}
+{% block content %}
+    <h3 id="form-title" class="text-center mt-5 pt-5">LOGIN</h3>
+    <form method="POST" action="{% url 'login' %}" class="d-flex justify-content-center align-items-center flex-column">
+        {% csrf_token %}
+        <div class="input-group justify-content-center mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <label>
+                {{ form.username }}
+            </label>
+        </div>
+        <div class="input-group justify-content-center mb-2">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <label>
+                {{ form.password }}
+            </label>
+        </div>
 
-                      {% endif %}
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <input class="btn btn-success" type="submit" value="Login">
+        </div>
+    </form>
 
-                  {% if form.username.errors %}
-                    <div class="alert alert-danger">{{ form.username.errors }}</div>
-                  {% endif %}
-                    <div class="input-box">
-                      <input type="text" id="name" aria-describedby="" placeholder="Phone number, username, or email"
-                             aria-required="true" maxlength="30" autocapitalize="off" autocorrect="off" name="username"
-                             value="" required>
-                    </div>
+    {% if form.errors %}
+        {% for error in form.errors.values.0 %}
+            <div class="alert alert-danger mt-4">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
 
-                  {% if form.email.errors %}
-                    <div class="alert alert-danger">{{ form.email.errors }}</div>
-                  {% endif %}
-                    <div class="input-box">
-                      <input type="password" name="password" id="password" placeholder="Password" aria-describedby=""
-                             maxlength="30" aria-required="true" autocapitalize="off" autocorrect="off" required>
-                    </div>
+    {% if form.non_field_errors %}
+        {% for non_f_error in form.non_field_errors %}
+            <div class="alert alert-danger mt-4">{{ non_f_error }}</div>
+        {% endfor %}
+    {% endif %}
 
-                    <span class="button-box">
-                      <button class="btn" type="submit" name="submit">Log in</button>
-                    </span>
-
-                    <a class="forgot" href="">Forgot password?</a>
-                  </form>
-                </div> <!-- Form-wrap end -->
-              </div> <!-- Login-box end -->
-
-              <div class="login-box">
-                <p class="text">Don't have an account?<a href="#">Sign up</a></p>
-              </div> <!-- Signup-box end -->
-
-              <div class="app">
-                <p>Get the app.</p>
-                <div class="app-img">
-                  <a href="https://itunes.apple.com/app/instagram/id389801252?pt=428156&amp;ct=igweb.loginPage.badge&amp;mt=8">
-                    <img src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/4b70f6fae447.png">
-                  </a>
-                  <a href="https://play.google.com/store/apps/details?id=com.instagram.android&amp;referrer=utm_source%3Dinstagramweb%26utm_campaign%3DloginPage%26utm_medium%3Dbadge">
-                    <img src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/f06b908907d5.png">
-                  </a>
-                </div>  <!-- App-img end-->
-              </div> <!-- App end -->
-            </div> <!-- Content end -->
-          </article>
-        </div> <!-- Wrapper end -->
-      </main>
-
-        <!-- 2-Role Footer -->
-      <footer class="footer" role="contentinfo">
-        <div class="footer-container">
-
-          <nav class="footer-nav" role="navigation">
-            <ul>
-              <li><a href="">About Us</a></li>
-              <li><a href="">Support</a></li>
-              <li><a href="">Blog</a></li>
-              <li><a href="">Press</a></li>
-              <li><a href="">Api</a></li>
-              <li><a href="">Jobs</a></li>
-              <li><a href="">Privacy</a></li>
-              <li><a href="">Terms</a></li>
-              <li><a href="">Directory</a></li>
-              <li>
-                <span class="language">Language
-                  <select name="language" class="select" onchange="la(this.value)">
-                    <option value="#">English</option>
-                    <option value="http://ru-instafollow.bitballoon.com">Russian</option>
-                  </select>
-                </span>
-              </li>
-            </ul>
-          </nav>
-
-          <span class="footer-logo">&copy; 2018 Instagram</span>
-        </div> <!-- Footer container end -->
-      </footer>
-
-    </section>
-  </span> <!-- Root -->
-
-    <!-- Select Link -->
-    <script type="text/javascript">
-        function la(src) {
-            window.location = src;
-        }
-
-    </script>
-</body>
-</html>
+    <div class="mt-4">
+        <div class="d-flex justify-content-center links">
+            Don't have an account?
+            <a href="{% url 'register' %}{% if next_url %}?next_url={{ next_url }}{% endif %}"
+               class="ml-2">Sign Up</a>
+        </div>
+{#        <div class="d-flex justify-content-center links">#}
+{#            Forgot your password?#}
+{#            <a href="{% url 'password_reset' %}"#}
+{#               class="ml-2">Reset Password</a>#}
+{#        </div>#}
+    </div>
+{% endblock %}
