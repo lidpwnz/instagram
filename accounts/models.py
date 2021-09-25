@@ -13,7 +13,7 @@ class Profile(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
-    avatar = models.ImageField(upload_to=settings.AVATARS_FOLDER, default=settings.AVATARS_DEFAULT)
+    avatar = models.ImageField(upload_to=settings.AVATARS_FOLDER)
     info = models.TextField(null=True, blank=True)
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, null=True)
     gender = models.ForeignKey('accounts.Gender', on_delete=models.SET_NULL, null=True)

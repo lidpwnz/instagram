@@ -3,7 +3,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
-from django.db.models import Q
 from django.core.validators import validate_email
 from accounts.models import Profile
 from core.helpers import get_widget_attrs
@@ -11,39 +10,45 @@ from core.helpers import get_widget_attrs
 
 class MyLoginForm(AuthenticationForm):
     def clean(self):
-        username = self.cleaned_data.get('username')
-        email = self.cleaned_data.get('email')
+        username_or_email = self.cleaned_data.get('username')
 
-        if not User.objects.get(username=username) and not User.objects.get(email=email):
-            raise ValidationError('User not found!')
+        try:
+            validate_email(username_or_email)
+            auth_by_email = User.objects.filter(email=username_or_email)
+            print(auth_by_email)
+
+            self.cleaned_data['username'] = auth_by_email.first().username
+
+        except (ValidationError, AttributeError) as e:
+            print('Exception called. Details:', e)
+            auth_by_username = User.objects.filter(username=username_or_email)
+            if not auth_by_username.exists():
+                raise ValidationError('User with this username/email not found!')
 
         return super(MyLoginForm, self).clean()
 
 
-class RegisterForm(forms.ModelForm):
-    phone_or_email = forms.CharField(max_length=70, widget=forms.TextInput(attrs=get_widget_attrs()))
-    fullname = forms.CharField(max_length=150, widget=forms.TextInput(attrs=get_widget_attrs()))
-
+class UserRegisterForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ['phone_or_email', 'fullname', 'username', 'password']
+        fields = ['username', 'email', 'password', 'first_name', ]
+        labels = {'first_name': 'Name'}
         widgets = {
             'username': forms.TextInput(attrs=get_widget_attrs()),
-            'password': forms.PasswordInput(attrs=get_widget_attrs())
+            'email': forms.EmailInput(attrs=get_widget_attrs()),
+            'password': forms.PasswordInput(attrs=get_widget_attrs()),
+            'first_name': forms.TextInput(attrs=get_widget_attrs()),
+
         }
 
-    def clean_phone_or_email(self):
-        user_input = self.cleaned_data.get('phone_or_email')
-        try:
-            validate_email(user_input)
-            self.cleaned_data['email'] = user_input
-        except Exception as e:
-            print('Exception details:', e)
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise ValidationError('Email is required!')
 
-        if user_input.lstrip('+').isdigit():
-            self.cleaned_data['phone_number'] = user_input
-
-        return user_input
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('User with the same email already exists!')
+        return email
 
     def save(self, commit=True):
         user = self.instance
@@ -52,26 +57,24 @@ class RegisterForm(forms.ModelForm):
             user.save()
         return user
 
-    def clean_fullname(self):
-        fullname = self.cleaned_data.get('fullname').split()
 
-        context = {}
-        if len(fullname) > 1:
-            context['first_name'], context['last_name'] = fullname
-        else:
-            context['first_name'] = fullname[0]
-
-        self.cleaned_data.update(context)
-        return fullname
-
-    def clean(self):
-        phone_or_email = self.cleaned_data.get('phone_or_email')
-        if phone_or_email and User.objects.filter(Q(email=phone_or_email) | Q(profile__phone_number=phone_or_email)):
-            raise ValidationError('User with this email/phone already exists!')
-
-
-class ProfileForm(forms.ModelForm):
+class ProfileRegisterForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ['info', 'phone_number', 'gender', 'avatar']
+        widgets = {
+            'info': forms.Textarea(attrs=get_widget_attrs()),
+            'phone_number': forms.TextInput(attrs=get_widget_attrs()),
+            'gender': forms.Select(attrs=get_widget_attrs(**{'class': 'form-select mb-3'})),
+            'avatar': forms.FileInput(attrs=get_widget_attrs())
+        }
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        if not avatar:
+            raise ValidationError('Avatar is required!')
+        return avatar
+
+
+
 

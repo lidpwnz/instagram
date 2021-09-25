@@ -1,6 +1,6 @@
 venv
 .idea
-DS_Store
+.DS_Store
 db.sqlite3
 *__pycache__*
 uploads

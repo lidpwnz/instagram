@@ -1,24 +1,16 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from accounts.forms import RegisterForm, ProfileForm, MyLoginForm
+from accounts.forms import UserRegisterForm, MyLoginForm, ProfileRegisterForm
 from accounts.models import Profile
 
 
 class MyLoginView(LoginView):
     form_class = MyLoginForm
 
-    def form_valid(self, form):
-        print('valid')
-        print(form.get_user())
-        return super(MyLoginView, self).form_valid(form)
-
     def get_redirect_url(self):
-        print(312312312)
-        print(self.request.user)
         return reverse_lazy('profile', kwargs={'pk': self.request.user.pk})
 
 
@@ -28,31 +20,36 @@ class ProfileView(generic.DetailView):
     context_object_name = 'user_obj'
 
 
-def test_view(request, *args, **kwargs):
-    return render(request, 'registration/register.html', {'form': ProfileForm})
-
-
 class RegisterView(generic.CreateView):
     model = User
     template_name = 'registration/register.html'
-    form_class = RegisterForm
+    form_class = UserRegisterForm
+    profile_form = ProfileRegisterForm
     object = None
 
-    def form_valid(self, form):
-        is_email = form.cleaned_data.get('email')
-        print(form.cleaned_data)
+    def get_context_data(self, **kwargs):
+        kwargs['profile_form'] = self.profile_form()
+        return super(RegisterView, self).get_context_data(**kwargs)
 
-        if is_email:
-            form.instance.email = is_email
+    def post(self, request, *args, **kwargs):
+        profile_form = self.profile_form(data=request.POST, files=request.FILES)
+        form = self.get_form()
+        if form.is_valid() and profile_form.is_valid():
+            return self.my_form_valid(form, profile_form)
         else:
-            form.instance.profile.phone_number = form.cleaned_data.get('phone_number')
+            return self.my_form_invalid(form, profile_form)
 
-        form.instance.first_name = form.cleaned_data.get('first_name')
-        form.instance.second_name = form.cleaned_data.get('second_name', '')
+    def my_form_invalid(self, form, profile_form):
+        context = {'form': form, 'profile_form': profile_form}
+        return self.render_to_response(context=context)
 
-        self.object = form.save()
+    def my_form_valid(self, form, profile_form):
+        response = super().form_valid(form)
+        profile_form.instance.user = self.object
+        profile_form.save()
+
         login(self.request, user=self.object)
-        return redirect(self.get_success_url())
+        return response
 
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'pk': self.object.pk})

@@ -1,6 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        .profile-image {
+            float: left;
+            width: calc(33.333% - 1rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 3rem;
+        }
+
+        .profile-image img {
+            border-radius: 50%;
+        }
+
+        .user-avatar {
+            width: 170px;
+            height: 170px;
+        }
+    </style>
     <div class="container">
         <div class="profile">
             <div class="profile-image">
@@ -10,7 +29,8 @@
             <div class="profile-user-settings">
                 <h1 class="profile-user-name">{{ user_obj.username }}</h1>
                 <a class="btn profile-edit-btn" href="">Редактировать профиль</a>
-                <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i>
+                <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog"
+                                                                                          aria-hidden="true"></i>
                 </button>
 
             </div>
