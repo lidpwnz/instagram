@@ -19,12 +19,6 @@ class ProfileView(generic.DetailView):
     template_name = 'user/profile.html'
     context_object_name = 'profile'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        print(self.object.user)
-        print(self.object.user.posts.all())
-        return super(ProfileView, self).get(request, *args, **kwargs)
-
 
 class RegisterView(generic.CreateView):
     model = User
