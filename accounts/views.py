@@ -1,8 +1,11 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import TemplateView
+
 from accounts.forms import UserRegisterForm, MyLoginForm, ProfileRegisterForm
 from accounts.models import Profile
 
@@ -53,3 +56,21 @@ class RegisterView(generic.CreateView):
 
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'pk': self.object.pk})
+
+
+class SearchView(TemplateView):
+    template_name = 'user/list.html'
+
+    def get_search_params(self):
+        return self.request.GET.get('params')
+
+    def get_users(self):
+        params = self.get_search_params()
+        username_ = Q(username__icontains=params)
+        email_ = Q(email__icontains=params)
+        first_name_ = Q(first_name__icontains=params)
+
+        return User.objects.filter(username_ | email_ | first_name_)
+
+    def get_context_data(self, **kwargs):
+        return super(SearchView, self).get_context_data(users=self.get_users())
