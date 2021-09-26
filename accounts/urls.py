@@ -1,5 +1,5 @@
 from django.urls import path, include
-from accounts.views import ProfileView, RegisterView, MyLoginView
+from accounts.views import ProfileView, RegisterView, MyLoginView, ProfileSubscribeView, UnsubscribeView
 from django.contrib.auth import views
 
 
@@ -10,5 +10,7 @@ urlpatterns = [
     # path('', include('django.contrib.auth.urls')),
     path('<int:pk>/profile/', ProfileView.as_view(), name='profile'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('<int:pk>/profile/subscribe', ProfileSubscribeView.as_view(), name='subscribe'),
+    path('<int:pk>/profile/unsubscribe', UnsubscribeView.as_view(), name='unsubscribe'),
 
 ]

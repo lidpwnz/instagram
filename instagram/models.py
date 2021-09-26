@@ -8,6 +8,7 @@ class Post(models.Model):
     description = models.TextField(max_length=2200, null=False, blank=False)
     likes_count = models.IntegerField(default=0)
     comments_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.owner} | likes: {self.likes_count} | comments: {self.comments_count}'

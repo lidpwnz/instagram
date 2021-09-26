@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <style>
+        .post_detail {
+            {#max-width: 600px;#}
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 3rem;
+            flex-direction: column;
+        }
+
+        .post_img {
+            width: 600px;
+            height: 600px;
+        }
+
+    </style>
+
+    <div class="container">
+        <div class="post_detail">
+            <img class="post_img" src="{{ post.img.url }}" alt="post_img" style="height: 100%">
+            <div class="user_info d-flex justify-content-start">
+                <div class="d-flex justify-content-between">
+                    <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar" style="width: 32px; height: 32px">
+                </div>
+                <div class="p-2 bd-highlight">
+                    <p><strong>{{ post.owner.username }}</strong></p>
+                </div>
+
+                <div class="p-2 bd-highlight post_desc">
+                    <a href="{% url 'post_delete' post_pk=post.pk %}">удалить</a>
+                </div>
+
+            </div>
+                <div class="p-2 bd-highlight post_desc">
+                    <p>{{ post.description }}</p>
+                </div>
+        </div>
+    </div>
+{% endblock %}

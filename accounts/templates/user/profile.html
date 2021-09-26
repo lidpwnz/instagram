@@ -90,6 +90,18 @@
             padding: 0 2.4rem;
             margin-left: 2rem;
         }
+
+        .subscribe-btn {
+            font-size: 0.8rem;
+            line-height: 1.8;
+            border: 0.1rem solid #dbdbdb;
+            border-radius: 0.3rem;
+            padding: 0 2.4rem;
+            margin-left: 1rem;
+            background-color: #0095F6;
+            color: white;
+        }
+
     </style>
     <div class="container mt-5 pt-3">
         <div class="profile">
@@ -103,7 +115,14 @@
                 <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog"
                                                                                           aria-hidden="true"></i>
                 </button>
-
+                <small>
+                    {% if request.user.profile != profile and request.user.profile not in profile.followers.all %}
+                        <a class="btn subscribe-btn" href="{% url 'subscribe' profile.user.id %}">Подписаться</a>
+{#                    {% endif %}#}
+                    {% elif request.user.profile != profile and request.user.profile in profile.followers.all %}
+                        <a class="btn profile-edit-btn" href="{% url 'unsubscribe' profile.user.id %}">Отписаться</a>
+                    {% endif %}
+                </small>
             </div>
 
             <div class="d-flex justify-content-between align-items-center w-50">
