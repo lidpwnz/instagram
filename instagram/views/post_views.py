@@ -49,11 +49,5 @@ class AddLikeToPostView(generic.View):
         return redirect('post_detail', pk=post.pk)
 
 
-class PostDetail(generic.DetailView):
-    model = Post
-    template_name = 'posts/detail.html'
-    context_object_name = 'post'
-
-
 class AddCommentToPostView(generic.View):
     pass

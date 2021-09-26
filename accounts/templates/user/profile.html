@@ -144,8 +144,7 @@
                                         <li class="gallery-item-likes text-light"><span class="visually-hidden">Likes:</span>
                                             <a class="text-light" href="{% url 'add_like' post.pk %}">
                                                 <i class="fas fa-heart" aria-hidden="true"></i>
-                                            </a>
-                                            {{ post.likes_count }}
+                                            </a>{{ post.likes_count }}
                                         </li>
                                         <li class="gallery-item-comments text-light"><span class="visually-hidden">Comments:</span><i
                                                 class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
@@ -169,9 +168,6 @@
     </main>
     <script>
         let followersBtn = $('#show-followers-btn')
-        console.log(followersBtn)
-        console.log($('#show-followers-modal'))
-        console.log(123)
         followersBtn.onclick(() => {
             $('#show-followers-modal').show()
         })
