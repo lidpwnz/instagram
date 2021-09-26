@@ -14,7 +14,9 @@
             <div class="col-4">
                 {% include 'partials/search.html' %}
             </div>
-            <a href="{% url 'profile' user.pk %}" class="col-4 text-end text-dark"><i class="fas fa-user"></i></a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' user.pk %}" class="col-4 text-end text-dark"><i class="fas fa-user"></i></a>
+            {% endif %}
         </div>
     </div>
 </nav>
