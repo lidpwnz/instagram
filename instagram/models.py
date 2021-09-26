@@ -6,12 +6,10 @@ class Post(models.Model):
     owner = models.ForeignKey(get_user_model(), related_name='posts', on_delete=models.CASCADE)
     img = models.ImageField(upload_to='post_pics', null=False, blank=False)
     description = models.TextField(max_length=2200, null=False, blank=False)
-    likes_count = models.IntegerField(default=0)
-    comments_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.owner} | likes: {self.likes_count} | comments: {self.comments_count}'
+        return f'owner: {self.owner} | created at: {self.created_at}'
 
 
 class Like(models.Model):
