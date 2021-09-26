@@ -97,7 +97,7 @@
             border: 0.1rem solid #dbdbdb;
             border-radius: 0.3rem;
             padding: 0 2.4rem;
-            margin-left: 1rem;
+            margin-left: 2rem;
             background-color: #0095F6;
             color: white;
         }
@@ -117,17 +117,26 @@
                 </button>
                 <small>
                     {% if request.user.profile != profile and request.user.profile not in profile.followers.all %}
-                        <a class="btn subscribe-btn" href="{% url 'subscribe' profile.user.id %}">Подписаться</a>
-{#                    {% endif %}#}
+                        <form action="{% url 'subscribe' profile.user.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="follow" class="btn subscribe-btn">
+                        </form>
                     {% elif request.user.profile != profile and request.user.profile in profile.followers.all %}
-                        <a class="btn profile-edit-btn" href="{% url 'unsubscribe' profile.user.id %}">Отписаться</a>
+                        <form action="{% url 'unsubscribe' profile.user.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Unfollow" class="btn profile-edit-btn">
+                        </form>
                     {% endif %}
                 </small>
             </div>
 
             <div class="d-flex justify-content-between align-items-center w-50">
                 <div><span class="profile-stat-count">{{ profile.user.posts.count }}</span> Публикации</div>
-                <div><span class="profile-stat-count">{{ profile.followers.count }}</span> <input type="submit" class="border-0 bg-white" value="Подписчики" id="show-followers-btn"></div>
+                <div><span class="profile-stat-count">{{ profile.followers.count }}</span> <input type="submit"
+                                                                                                  class="border-0 bg-white"
+                                                                                                  value="Подписчики"
+                                                                                                  id="show-followers-btn">
+                </div>
                 <div><span class="profile-stat-count">{{ profile.subscribes.count }}</span> Подписки</div>
             </div>
 
@@ -160,7 +169,8 @@
                                 <div class="gallery-item-info">
 
                                     <ul class="px-0 py-0">
-                                        <li class="gallery-item-likes text-light"><span class="visually-hidden">Likes:</span>
+                                        <li class="gallery-item-likes text-light"><span
+                                                class="visually-hidden">Likes:</span>
                                             <a class="text-light" href="{% url 'add_like' post.pk %}">
                                                 <i class="fas fa-heart" aria-hidden="true"></i>
                                             </a>{{ post.likes_count }}

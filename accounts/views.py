@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -9,6 +11,7 @@ from django.views import generic, View
 from django.views.generic import TemplateView
 
 from accounts.forms import UserRegisterForm, MyLoginForm, ProfileRegisterForm
+from accounts.helpers import SubscribeOperationsMixin
 from accounts.models import Profile
 
 
@@ -78,27 +81,11 @@ class SearchView(TemplateView):
         return super(SearchView, self).get_context_data(users=self.get_users())
 
 
-class ProfileSubscribeView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        current_profile_user = self.request.user.profile
-        subscribe_to_user = get_object_or_404(Profile, pk=kwargs.get('pk'))
-        if current_profile_user in subscribe_to_user.followers.all():
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        current_profile = self.request.user.profile
-        subscribe_to_user = get_object_or_404(Profile, pk=kwargs.get('pk'))
-        subscribe_to_user.followers.add(current_profile)
-        return redirect('profile', pk=kwargs.get('pk'))
+class ProfileSubscribeView(SubscribeOperationsMixin, View):
+    def action(self):
+        self._subscribe_to_user.followers.add(self._current_profile_user)
 
 
-class UnsubscribeView(View):
-    def get(self, request, *args, **kwargs):
-        current_profile = self.request.user.profile
-        subscribe_to_profile = get_object_or_404(Profile, pk=kwargs.get('pk'))
-        print(current_profile.followers.all())
-        current_profile.subscribes.remove(subscribe_to_profile)
-        print(subscribe_to_profile.subscribes.all())
-        return redirect('profile', pk=subscribe_to_profile.pk)
+class UnsubscribeView(SubscribeOperationsMixin, View):
+    def action(self):
+        self._current_profile_user.subscribes.remove(self._subscribe_to_user)
