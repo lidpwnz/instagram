@@ -5,7 +5,6 @@
 
     <style>
         .post_detail {
-            {#max-width: 600px;#}
             margin: 20px;
             display: flex;
             justify-content: center;
@@ -33,7 +32,10 @@
                 </div>
 
                 <div class="p-2 bd-highlight post_desc">
-                    <a href="{% url 'post_delete' post_pk=post.pk %}">удалить</a>
+                    <form action="{% url 'post_delete' post_pk=post.pk %}" method="post">
+                        {% csrf_token %}
+                        Delete
+                    </form>
                 </div>
 
             </div>

@@ -17,27 +17,31 @@
         }
 
     </style>
-<div class="container">
-    <a href="{% url 'post_create' %}" class="btn btn-primary w-25 mt-3">Create New Post</a>
-    {% for post in posts %}
+    <div class="container">
+        <h1 class="text-center">Feed</h1>
+        <a href="{% url 'post_create' %}" class="btn btn-primary w-25 mt-3">Create New Post</a>
 
-    <div class="container d-flex justify-content-center">
-        <div class="post_detail">
-            <img class="post_img" src="{{ post.img.url }}" alt="post_img">
-            <div class="user_info d-flex justify-content-start">
-                <div class="d-flex justify-content-between">
-                    <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar" style="width: 32px; height: 32px">
-                </div>
-                <div class="p-2 bd-highlight">
-                    <p><strong>{{ post.owner.username }}</strong></p>
+        {% for post in posts %}
+            <div class="container d-flex justify-content-center">
+                <div class="post_detail">
+                    <a href="{% url 'post_detail' post.pk %}">
+                        <img class="post_img" src="{{ post.img.url }}" alt="post_img">
+                    </a>
+                    <div class="user_info d-flex justify-content-start">
+                        <div class="d-flex justify-content-between">
+                            <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar"
+                                 style="width: 32px; height: 32px">
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <p><strong>{{ post.owner.username }}</strong></p>
+                        </div>
+                    </div>
+                    <div class="p-2 bd-highlight post_desc">
+                        <p>{{ post.description }}</p>
+                    </div>
                 </div>
             </div>
-                <div class="p-2 bd-highlight post_desc">
-                    <p>{{ post.description }}</p>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 {% endblock %}
 

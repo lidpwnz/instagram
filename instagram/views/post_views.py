@@ -26,11 +26,11 @@ class PostDetailView(generic.DetailView):
 
 
 class PostDeleteView(View):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         post = get_object_or_404(Post, pk=kwargs['post_pk'])
-        post_owner = post.owner.profile.pk
+        post_owner_pk = post.owner.profile.pk
         post.delete()
-        return redirect('profile', context={'pk': post_owner})
+        return redirect('profile', pk=post_owner_pk)
 
 
 class FeedView(generic.ListView):

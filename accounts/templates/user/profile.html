@@ -170,31 +170,35 @@
             <div class="row">
                 {% for post in profile.user.posts.all %}
                     <div class="col-4">
-                        <a href="{% url 'post_detail' post.pk %}">
-                            <div class="gallery-item" tabindex="0">
-                                <img src="{{ post.img.url }}"
-                                     class="gallery-image" alt="">
-                                <div class="gallery-item-info">
+                        <div class="gallery-item" tabindex="0">
+                            <img src="{{ post.img.url }}"
+                                 class="gallery-image" alt="">
 
-                                    <ul class="px-0 py-0">
-                                        <li class="gallery-item-likes text-light"><span
-                                                class="visually-hidden">Likes:</span>
-                                            <a class="text-light" href="{% url 'add_like' post.pk %}">
-                                                <i class="fas fa-heart" aria-hidden="true"></i>
-                                            </a>{{ post.likes_count }}
-                                        </li>
-                                        <li class="gallery-item-comments text-light"><span class="visually-hidden">Comments:</span><i
-                                                class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
-                                        </li>
-                                    </ul>
+                            <div class="gallery-item-info">
 
-                                </div>
-                        </a>
+                                <ul class="px-0 py-0">
+                                    <li class="gallery-item-likes text-light"><span
+                                            class="visually-hidden">Likes:</span>
+                                        <a class="text-light" href="{% url 'add_like' post.pk %}">
+                                            <i class="fas fa-heart" aria-hidden="true"></i>
+                                        </a>{{ post.likes_count }}
+                                    </li>
+                                    <li class="gallery-item-comments text-light">
+                                        <span class="visually-hidden">Comments:</span>
+                                        <i class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
+                                    </li>
+                                    <li class="d-block">
+                                        <a href="{% url 'post_detail' post.pk %}" class="text-white">
+                                            to post
+                                        </a>
 
-                    </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
-        </div>
+            </div>
         </div>
         <!-- End of gallery -->
 
