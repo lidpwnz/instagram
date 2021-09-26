@@ -108,9 +108,11 @@
 
             <div class="d-flex justify-content-between align-items-center w-50">
                 <div><span class="profile-stat-count">{{ profile.posts_count }}</span> Публикации</div>
-                <div><span class="profile-stat-count">{{ profile.followers_count }}</span> Подписчики</div>
+                <div><span class="profile-stat-count">{{ profile.followers_count }}</span> <input type="submit" class="border-0 bg-white" value="Подписчики" id="show-followers-btn"></div>
                 <div><span class="profile-stat-count">{{ profile.subscribes_count }}</span> Подписки</div>
             </div>
+
+            {% include 'partials/show_followers.html' %}
 
             <div class="mt-5 d-flex flex-column">
 
@@ -143,8 +145,11 @@
                                 <div class="gallery-item-info">
 
                                     <ul class="px-0 py-0">
-                                        <li class="gallery-item-likes text-light"><span class="visually-hidden">Likes:</span><i
-                                                class="fas fa-heart" aria-hidden="true"></i> {{ post.likes_count }}
+                                        <li class="gallery-item-likes text-light"><span class="visually-hidden">Likes:</span>
+                                            <a class="text-light" href="{% url 'add_like' post.pk %}">
+                                                <i class="fas fa-heart" aria-hidden="true"></i>
+                                            </a>
+                                            {{ post.likes_count }}
                                         </li>
                                         <li class="gallery-item-comments text-light"><span class="visually-hidden">Comments:</span><i
                                                 class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
@@ -166,6 +171,16 @@
         <!-- End of container -->
 
     </main>
+    <script>
+        let followersBtn = $('#show-followers-btn')
+        console.log(followersBtn)
+        console.log($('#show-followers-modal'))
+        console.log(123)
+        followersBtn.onclick(() => {
+            $('#show-followers-modal').show()
+        })
+
+    </script>
 {% endblock %}
 
 

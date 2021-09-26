@@ -1,6 +1,5 @@
-<form class="d-flex" action="{% url 'search' %}" method="get">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <input id="search-input" class="form-control me-2 text-center" type="search" placeholder="&#xF002; Search"
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<form class="d-flex justify-content-center" action="{% url 'search' %}" method="get">
+    <input id="search-input" class="form-control text-center w-75 h-50" type="search" placeholder="&#xF002; Search"
            style="font-family:Arial, FontAwesome, sans-serif" aria-label="Search" name="params">
-    <button class="btn btn-outline-success text-dark" type="submit"> Search</button>
 </form>

@@ -19,21 +19,40 @@ class PostCreate(generic.CreateView):
 
 
 class AddLikeToPostView(generic.View):
+    success_url = None
+
     def get_post(self):
         return Post.objects.get(pk=self.kwargs.get('post_pk'))
 
-    def post(self, request, *args, **kwargs):
-        user_who_likes = request.user
+    def get(self, request, *args, **kwargs):
+        self.post(request, *args, **kwargs)
+        return redirect('profile', pk=self.request.user.pk)
+
+    def set_like(self):
         post = self.get_post()
-        if user_who_likes in post.users_who_like_it.all():
-            post.users_who_like_it.get(liked_user=user_who_likes).delete()
-            post.likes_count -= 1
-        else:
-            post.users_who_like_it.add(user_who_likes)
+        user_who_likes = self.request.user
+        post_users_pk_list = post.users_who_like_it.values_list('liked_user', flat=True)
+
+        if user_who_likes.pk not in post_users_pk_list:
+            Like.objects.create(post=post, liked_user=user_who_likes)
             post.likes_count += 1
 
+        else:
+            post.users_who_like_it.get(liked_user=user_who_likes).delete()
+            post.likes_count -= 1
+
+        return post
+
+    def post(self, request, *args, **kwargs):
+        post = self.set_like()
         post.save()
-        return redirect(self.request.get_full_path)
+        return redirect('post_detail', pk=post.pk)
+
+
+class PostDetail(generic.DetailView):
+    model = Post
+    template_name = 'posts/detail.html'
+    context_object_name = 'post'
 
 
 class AddCommentToPostView(generic.View):
