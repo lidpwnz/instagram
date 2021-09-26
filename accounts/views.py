@@ -83,7 +83,7 @@ class ProfileSubscribeView(View):
     def dispatch(self, request, *args, **kwargs):
         current_profile_user = self.request.user.profile
         subscribe_to_user = get_object_or_404(Profile, pk=kwargs.get('pk'))
-        if current_profile_user in subscribe_to_user.subscribes.all():
+        if current_profile_user in subscribe_to_user.followers.all():
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
 

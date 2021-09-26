@@ -33,6 +33,23 @@ class PostDeleteView(View):
         return redirect('profile', context={'pk': post_owner})
 
 
+class FeedView(generic.ListView):
+    template_name = 'posts/feed.html'
+    model = Post
+    context_object_name = 'posts'
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = []
+        for i in self.request.user.profile.subscribes.all():
+            if self.request.user.profile == i:
+                continue
+            for j in i.user.posts.all():
+                queryset.append(j)
+        print(queryset)
+        return queryset
+
+
 class AddLikeToPostView(generic.View):
     success_url = None
 

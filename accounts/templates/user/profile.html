@@ -116,10 +116,10 @@
                                                                                           aria-hidden="true"></i>
                 </button>
                 <small>
-                    {% if request.user != profile.user and request.user.profile not in profile.followers.all %}
+                    {% if request.user.profile != profile and request.user.profile not in profile.followers.all %}
                         <a class="btn subscribe-btn" href="{% url 'subscribe' profile.user.id %}">Подписаться</a>
-                    {% endif %}
-                    {% if request.user != profile.user and request.user.profile in profile.followers.all %}
+{#                    {% endif %}#}
+                    {% elif request.user.profile != profile and request.user.profile in profile.followers.all %}
                         <a class="btn profile-edit-btn" href="{% url 'unsubscribe' profile.user.id %}">Отписаться</a>
                     {% endif %}
                 </small>
