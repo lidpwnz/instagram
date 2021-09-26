@@ -4,7 +4,6 @@
     <style>
         .post_detail {
             margin: 20px;
-            {#display: flex;#}
             align-items: center;
             margin-right: 3rem;
             flex-direction: column;
@@ -19,12 +18,12 @@
 
     </style>
 <div class="container">
+    <a href="{% url 'post_create' %}" class="btn btn-primary w-25 mt-3">Create New Post</a>
     {% for post in posts %}
 
-
-    <div class="container" style="justify-content: center;">
+    <div class="container d-flex justify-content-center">
         <div class="post_detail">
-            <img class="post_img" src="{{ post.img.url }}" alt="post_img" style="height: 100%">
+            <img class="post_img" src="{{ post.img.url }}" alt="post_img">
             <div class="user_info d-flex justify-content-start">
                 <div class="d-flex justify-content-between">
                     <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar" style="width: 32px; height: 32px">

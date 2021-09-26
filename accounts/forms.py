@@ -30,6 +30,7 @@ class MyLoginForm(AuthenticationForm):
 
 class UserRegisterForm(forms.ModelForm):
     class Meta:
+        exclude = []
         model = get_user_model()
         fields = ['username', 'email', 'password', 'first_name', ]
         labels = {'first_name': 'Name'}
@@ -46,13 +47,17 @@ class UserRegisterForm(forms.ModelForm):
         if not email:
             raise ValidationError('Email is required!')
 
-        if User.objects.filter(email=email).exists():
+        users_wth_same_email = User.objects.filter(email=email)
+        if users_wth_same_email.exists() and self.instance not in users_wth_same_email:
             raise ValidationError('User with the same email already exists!')
         return email
 
     def save(self, commit=True):
         user = self.instance
-        user.set_password(self.cleaned_data["password"])
+        password = self.cleaned_data.get('password')
+        if password:
+            user.set_password(password)
+
         if commit:
             user.save()
         return user
@@ -61,20 +66,16 @@ class UserRegisterForm(forms.ModelForm):
 class ProfileRegisterForm(forms.ModelForm):
     class Meta:
         model = Profile
+        exclude = []
         fields = ['info', 'phone_number', 'gender', 'avatar']
         widgets = {
             'info': forms.Textarea(attrs=get_widget_attrs()),
             'phone_number': forms.TextInput(attrs=get_widget_attrs()),
-            'gender': forms.Select(attrs=get_widget_attrs(**{'class': 'form-select mb-3'})),
+            'gender': forms.RadioSelect(),
             'avatar': forms.FileInput(attrs=get_widget_attrs())
         }
 
-    def clean_avatar(self):
-        avatar = self.cleaned_data.get('avatar')
-        if not avatar:
-            raise ValidationError('Avatar is required!')
-        return avatar
 
-
-
-
+class UserUpdateForm(UserRegisterForm):
+    class Meta(UserRegisterForm.Meta):
+        exclude = ['password']

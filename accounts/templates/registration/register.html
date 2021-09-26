@@ -2,12 +2,12 @@
 
 {% block content %}
     <div class="d-flex justify-content-center align-items-center flex-column my-5">
-        <h1 class="my-3">Register</h1>
-        <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+        <h1 class="my-3">{{ title | default:'Register' }}</h1>
+        <form action="{{ request.get_full_path }}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% include 'partials/form.html' with form=form fields_only=True %}
             {% include 'partials/form.html' with form=profile_form fields_only=True %}
-            <button class="btn btn-success">REGISTER</button>
+            <button class="btn btn-success">{{ title | upper }}</button>
         </form>
 
     </div>

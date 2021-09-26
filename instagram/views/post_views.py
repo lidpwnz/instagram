@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views import generic, View
 
 from instagram.forms.post_form import PostForm
@@ -46,7 +46,6 @@ class FeedView(generic.ListView):
                 continue
             for j in i.user.posts.all():
                 queryset.append(j)
-        print(queryset)
         return queryset
 
 
@@ -78,7 +77,7 @@ class AddLikeToPostView(generic.View):
     def post(self, request, *args, **kwargs):
         post = self.set_like()
         post.save()
-        return redirect('post_detail', pk=post.pk)
+        return redirect('post_detail', post_pk=post.pk)
 
 
 class AddCommentToPostView(generic.View):

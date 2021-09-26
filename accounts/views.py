@@ -1,16 +1,12 @@
-from abc import abstractmethod
-
 from django.contrib.auth import login
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.views.generic import TemplateView
-
-from accounts.forms import UserRegisterForm, MyLoginForm, ProfileRegisterForm
+from accounts.forms import UserRegisterForm, MyLoginForm, ProfileRegisterForm, UserUpdateForm
 from accounts.helpers import SubscribeOperationsMixin
 from accounts.models import Profile
 
@@ -89,3 +85,21 @@ class ProfileSubscribeView(SubscribeOperationsMixin, View):
 class UnsubscribeView(SubscribeOperationsMixin, View):
     def action(self):
         self._current_profile_user.subscribes.remove(self._subscribe_to_user)
+
+
+class UpdateUser(UserPassesTestMixin, generic.UpdateView):
+    model = User
+    template_name = 'registration/register.html'
+    extra_context = {'title': 'Update'}
+    form_class = UserUpdateForm
+
+    def get_context_data(self, **kwargs):
+        profile = self.object.profile
+        kwargs['profile_form'] = ProfileRegisterForm(instance=profile)
+        return super(UpdateUser, self).get_context_data(**kwargs)
+
+    def test_func(self):
+        return self.request.user == self.get_object()
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.pk})

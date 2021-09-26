@@ -8,6 +8,9 @@ from django.conf import settings
 class Gender(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Profile(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
