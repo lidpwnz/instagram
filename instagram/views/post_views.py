@@ -51,6 +51,14 @@ class FeedView(generic.ListView):
 
 class AddLikeToPostView(generic.View):
     success_url = None
+    like_class = Like
+    user_who_likes = None
+    _post = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user_who_likes = self.request.user
+        self._post = self.get_post()
+        return super(AddLikeToPostView, self).dispatch(request, *args, **kwargs)
 
     def get_post(self):
         return Post.objects.get(pk=self.kwargs.get('post_pk'))
@@ -58,27 +66,28 @@ class AddLikeToPostView(generic.View):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
+    def add_like(self):
+        Like.objects.create(post=self._post, liked_user=self.user_who_likes)
+
+    def remove_like(self):
+        self._post.users_who_like_it.get(liked_user=self.user_who_likes).delete()
+
     def get_success_url(self):
         return self.request.META['HTTP_REFERER']
 
     def set_like(self):
-        post = self.get_post()
         user_who_likes = self.request.user
-        post_users_pk_list = post.users_who_like_it.values_list('liked_user', flat=True)
+        post_users_pk_list = self._post.users_who_like_it.values_list('liked_user', flat=True)
 
         if user_who_likes.pk not in post_users_pk_list:
-            Like.objects.create(post=post, liked_user=user_who_likes)
-            post.likes_count += 1
-
+            self.add_like()
         else:
-            post.users_who_like_it.get(liked_user=user_who_likes).delete()
-            post.likes_count -= 1
+            self.remove_like()
 
-        return post
+        self._post.save()
 
     def post(self, request, *args, **kwargs):
-        post = self.set_like()
-        post.save()
+        self.set_like()
         return redirect(self.get_success_url())
 
 
