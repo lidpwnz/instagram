@@ -90,3 +90,10 @@
     padding: 0 2.4rem;
     margin-left: 2rem;
 }
+
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%);
+    padding: 3px;
+}

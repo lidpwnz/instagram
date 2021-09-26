@@ -1,19 +1,14 @@
 {% extends 'base.html' %}
+{% load query_values %}
 
 {% block content %}
     <style>
-        .post_detail {
-            margin: 20px;
-            align-items: center;
-            margin-right: 3rem;
-            flex-direction: column;
-            border: solid 1px gray;
-            max-width: 602px;
-        }
 
-        .post_img {
-            width: 600px;
-            height: 600px;
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%);
+            padding: 3px;
         }
 
     </style>
@@ -22,26 +17,58 @@
         <a href="{% url 'post_create' %}" class="btn btn-primary w-25 mt-3">Create New Post</a>
 
         {% for post in posts %}
-            <div class="container d-flex justify-content-center">
-                <div class="post_detail">
-                    <a href="{% url 'post_detail' post.pk %}">
-                        <img class="post_img" src="{{ post.img.url }}" alt="post_img">
-                    </a>
-                    <div class="user_info d-flex justify-content-start">
-                        <div class="d-flex justify-content-between">
-                            <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar"
-                                 style="width: 32px; height: 32px">
+            <div class="container d-flex justify-content-center my-4">
+                <div class="card w-50">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle post-avatar" src="{{ post.owner.profile.avatar.url }}" alt="">
+                            <a href="{% url 'profile' post.owner.pk %}"
+                               class="ms-3 text-decoration-none text-dark fw-bold">
+                                {{ post.owner.username }}
+                            </a>
                         </div>
-                        <div class="p-2 bd-highlight">
-                            <p><strong>{{ post.owner.username }}</strong></p>
-                        </div>
+
                     </div>
-                    <div class="p-2 bd-highlight post_desc">
-                        <p>{{ post.description }}</p>
+                    <img src="{{ post.img.url }}" alt="" class="w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <a href="{% url 'add_like' post.pk %}" class="text-decoration-none text-dark">
+
+                                {% values post.users_who_like_it.all 'liked_user' flat=True as post_users %}
+
+                                {% if user.pk not in post_users %}
+                                    <i id="like-btn" class="far fa-heart fa-2x"></i>
+                                {% else %}
+                                    <i id="like-btn" class="fas fa-heart fa-2x"></i>
+                                {% endif %}
+
+                            </a>
+                            <i class="far fa-comment fa-rotate-horizontal fa-2x ms-3"></i>
+                        </div>
+                        <p class="fw-bold mt-2 fs-6">{{ post.users_who_like_it.count }} users like it</p>
                     </div>
                 </div>
+
+                {#                <div class="post_detail">#}
+                {#                    <a href="{% url 'post_detail' post.pk %}">#}
+                {#                        <img class="post_img" src="{{ post.img.url }}" alt="post_img">#}
+                {#                    </a>#}
+                {#                    <div class="user_info d-flex justify-content-start">#}
+                {#                        <div class="d-flex justify-content-between">#}
+                {#                            <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar"#}
+                {#                                 style="width: 32px; height: 32px">#}
+                {#                        </div>#}
+                {#                        <div class="p-2 bd-highlight">#}
+                {#                            <p><strong>{{ post.owner.username }}</strong></p>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <div class="p-2 bd-highlight post_desc">#}
+                {#                        <p>{{ post.description }}</p>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         {% endfor %}
     </div>
+
 {% endblock %}
 

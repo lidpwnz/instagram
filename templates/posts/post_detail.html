@@ -18,30 +18,44 @@
             height: 600px;
         }
 
+
+
     </style>
 
-    <div class="container">
-        <div class="post_detail">
-            <img class="post_img" src="{{ post.img.url }}" alt="post_img" style="height: 100%">
-            <div class="user_info d-flex justify-content-start">
-                <div class="d-flex justify-content-between">
-                    <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar" style="width: 32px; height: 32px">
-                </div>
-                <div class="p-2 bd-highlight">
-                    <p><strong>{{ post.owner.username }}</strong></p>
-                </div>
+    {#    <div class="container">#}
+    {#        <div class="post_detail">#}
+    {#            <img class="post_img" src="{{ post.img.url }}" alt="post_img" style="height: 100%">#}
+    {#            <div class="user_info d-flex justify-content-start">#}
+    {#                <div class="d-flex justify-content-between">#}
+    {#                    <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar" style="width: 32px; height: 32px">#}
+    {#                </div>#}
+    {#                <div class="p-2 bd-highlight">#}
+    {#                    <p><strong>{{ post.owner.username }}</strong></p>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="p-2 bd-highlight post_desc">#}
+    {#                    <form action="{% url 'post_delete' post_pk=post.pk %}" method="post">#}
+    {#                        {% csrf_token %}#}
+    {#                        Delete#}
+    {#                    </form>#}
+    {#                </div>#}
+    {##}
+    {#            </div>#}
+    {#                <div class="p-2 bd-highlight post_desc">#}
+    {#                    <p>{{ post.description }}</p>#}
+    {#                </div>#}
+    {#        </div>#}
+    {#    </div>#}
 
-                <div class="p-2 bd-highlight post_desc">
-                    <form action="{% url 'post_delete' post_pk=post.pk %}" method="post">
-                        {% csrf_token %}
-                        Delete
-                    </form>
-                </div>
+    <div class="card w-50">
+        <div class="card-header">
+            <img class="rounded-circle post-avatar" src="{{ post.owner.profile.avatar.url }}" alt="">
 
-            </div>
-                <div class="p-2 bd-highlight post_desc">
-                    <p>{{ post.description }}</p>
-                </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
     </div>
 {% endblock %}

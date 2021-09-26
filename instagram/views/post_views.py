@@ -56,8 +56,10 @@ class AddLikeToPostView(generic.View):
         return Post.objects.get(pk=self.kwargs.get('post_pk'))
 
     def get(self, request, *args, **kwargs):
-        self.post(request, *args, **kwargs)
-        return redirect('profile', pk=self.request.user.pk)
+        return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER']
 
     def set_like(self):
         post = self.get_post()
@@ -77,7 +79,7 @@ class AddLikeToPostView(generic.View):
     def post(self, request, *args, **kwargs):
         post = self.set_like()
         post.save()
-        return redirect('post_detail', post_pk=post.pk)
+        return redirect(self.get_success_url())
 
 
 class AddCommentToPostView(generic.View):
