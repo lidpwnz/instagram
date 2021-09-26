@@ -107,22 +107,18 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center w-50">
-                <div><span class="profile-stat-count">{{ profile.posts_count }}</span> Публикации</div>
-                <div><span class="profile-stat-count">{{ profile.followers_count }}</span> <input type="submit" class="border-0 bg-white" value="Подписчики" id="show-followers-btn"></div>
-                <div><span class="profile-stat-count">{{ profile.subscribes_count }}</span> Подписки</div>
+                <div><span class="profile-stat-count">{{ profile.user.posts.count }}</span> Публикации</div>
+                <div><span class="profile-stat-count">{{ profile.followers.count }}</span> <input type="submit" class="border-0 bg-white" value="Подписчики" id="show-followers-btn"></div>
+                <div><span class="profile-stat-count">{{ profile.subscribes.count }}</span> Подписки</div>
             </div>
 
             {% include 'partials/show_followers.html' %}
 
             <div class="mt-5 d-flex flex-column">
-
-                <h6>{{ profile.user.get_full_name }}</h6>
                 <p>
                     {{ profile.info }}
                 </p>
-
             </div>
-
         </div>
         <!-- End of profile section -->
 
