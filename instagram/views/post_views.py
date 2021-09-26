@@ -1,6 +1,6 @@
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.views import generic
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
+from django.views import generic, View
 
 from instagram.forms.post_form import PostForm
 from instagram.models import Post, Like
@@ -15,7 +15,22 @@ class PostCreate(generic.CreateView):
         return {'owner': self.request.user}
 
     def get_success_url(self):
-        return reverse_lazy('profile', kwargs={'pk': self.object.pk})
+        return reverse_lazy('profile', kwargs={'pk': self.request.user.profile.pk})
+
+
+class PostDetailView(generic.DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'
+    context_object_name = 'post'
+    pk_url_kwarg = 'post_pk'
+
+
+class PostDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        post = get_object_or_404(Post, pk=kwargs['post_pk'])
+        post_owner = post.owner.profile.pk
+        post.delete()
+        return redirect('profile', context={'pk': post_owner})
 
 
 class AddLikeToPostView(generic.View):
