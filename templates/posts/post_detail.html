@@ -4,58 +4,13 @@
 {% block content %}
 
     <style>
-        .post_detail {
-            margin: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 3rem;
-            flex-direction: column;
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%);
+            padding: 3px;
         }
-
-        .post_img {
-            width: 600px;
-            height: 600px;
-        }
-
-
-
     </style>
 
-    {#    <div class="container">#}
-    {#        <div class="post_detail">#}
-    {#            <img class="post_img" src="{{ post.img.url }}" alt="post_img" style="height: 100%">#}
-    {#            <div class="user_info d-flex justify-content-start">#}
-    {#                <div class="d-flex justify-content-between">#}
-    {#                    <img src="{{ post.owner.profile.avatar.url }}" alt="user_avatar" style="width: 32px; height: 32px">#}
-    {#                </div>#}
-    {#                <div class="p-2 bd-highlight">#}
-    {#                    <p><strong>{{ post.owner.username }}</strong></p>#}
-    {#                </div>#}
-    {##}
-    {#                <div class="p-2 bd-highlight post_desc">#}
-    {#                    <form action="{% url 'post_delete' post_pk=post.pk %}" method="post">#}
-    {#                        {% csrf_token %}#}
-    {#                        Delete#}
-    {#                    </form>#}
-    {#                </div>#}
-    {##}
-    {#            </div>#}
-    {#                <div class="p-2 bd-highlight post_desc">#}
-    {#                    <p>{{ post.description }}</p>#}
-    {#                </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    <div class="card w-50">
-        <div class="card-header">
-            <img class="rounded-circle post-avatar" src="{{ post.owner.profile.avatar.url }}" alt="">
-
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>
+    {% include 'partials/post_detail_partial.html' %}
 {% endblock %}
