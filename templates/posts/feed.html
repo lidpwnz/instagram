@@ -1,16 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <style>
-
-        .post-avatar {
-            width: 40px;
-            height: 40px;
-            background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%);
-            padding: 3px;
-        }
-
-    </style>
     <div class="container">
         <h1 class="text-center">Feed</h1>
         <a href="{% url 'post_create' %}" class="btn btn-primary w-25 mt-3">Create New Post</a>
