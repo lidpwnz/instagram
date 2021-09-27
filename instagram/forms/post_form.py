@@ -1,6 +1,6 @@
 from django import forms
 from core.helpers import get_widget_attrs
-from instagram.models import Post
+from instagram.models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
@@ -12,3 +12,9 @@ class PostForm(forms.ModelForm):
             'description': forms.Textarea(attrs=get_widget_attrs()),
             'owner': forms.HiddenInput()
         }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ['post', 'comment_author']

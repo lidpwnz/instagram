@@ -19,3 +19,9 @@ class Like(models.Model):
     def __str__(self):
         return f'{self.post} | liker: {self.liked_user}'
 
+
+class Comment(models.Model):
+    text = models.TextField(max_length=1000, null=False, blank=False)
+    post = models.ForeignKey('instagram.Post', on_delete=models.CASCADE, related_name='comments')
+    comment_author = models.ForeignKey(get_user_model(), on_delete=models.RESTRICT, related_name='comment_authors')
+    created_at = models.DateTimeField(auto_now_add=True)
