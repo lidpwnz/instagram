@@ -7,7 +7,7 @@
             {% csrf_token %}
             {% include 'partials/form.html' with form=form fields_only=True %}
             {% include 'partials/form.html' with form=profile_form fields_only=True %}
-            <button class="btn btn-success">{{ title | upper }}</button>
+            <button class="btn btn-success">{{ title | default:'Register' | upper }}</button>
         </form>
 
     </div>
