@@ -82,7 +82,7 @@ class AddLikeToPostView(generic.View):
         self._post.users_who_like_it.get(liked_user=self.user_who_likes).delete()
 
     def get_success_url(self):
-        return self.request.META['HTTP_REFERER']
+        return self.request.META.get('HTTP_REFERER', reverse_lazy('feed'))
 
     def set_like(self):
         user_who_likes = self.request.user

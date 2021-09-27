@@ -141,3 +141,6 @@ AVATARS_FOLDER = 'user_avatars'
 AVATARS_DEFAULT = f'/{AVATARS_FOLDER}/default_img.jpeg'
 POST_PICS_FOLDER = 'post_pics'
 
+
+LOGOUT_REDIRECT_URL = 'login'
+
