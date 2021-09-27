@@ -17,4 +17,13 @@ class PostForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        exclude = ['post', 'comment_author']
+        fields = ['text', ]
+        # exclude = ['post', 'comment_author']
+        labels = {
+            'text': 'Leave a comment'
+        }
+        widgets = {
+            'text': forms.TextInput(attrs=get_widget_attrs()),
+            'post': forms.HiddenInput(),
+            'comment_author': forms.HiddenInput(),
+        }

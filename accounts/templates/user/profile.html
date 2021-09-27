@@ -181,7 +181,7 @@
                                             class="visually-hidden">Likes:</span>
                                         <a class="text-light" href="{% url 'add_like' post.pk %}">
                                             <i class="fas fa-heart" aria-hidden="true"></i>
-                                        </a>{{ post.likes_count }}
+                                        </a>{{ post.users_who_like_it.count }}
                                     </li>
                                     <li class="gallery-item-comments text-light">
                                         <span class="visually-hidden">Comments:</span>
