@@ -2,7 +2,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic, View
 
-from instagram.forms.post_form import PostForm
+from instagram.forms.post_form import PostForm, CommentForm
 from instagram.models import Post, Like
 
 
@@ -23,7 +23,11 @@ class PostDetailView(generic.DetailView):
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_pk'
+    form = CommentForm
 
+    def get_context_data(self, **kwargs):
+        kwargs['form'] = self.form()
+        return super().get_context_data(**kwargs)
 
 class PostDeleteView(View):
     def post(self, request, *args, **kwargs):
@@ -38,6 +42,7 @@ class FeedView(generic.ListView):
     model = Post
     context_object_name = 'posts'
     ordering = ['-created_at']
+    form = CommentForm
 
     def get_queryset(self):
         queryset = []
@@ -47,6 +52,10 @@ class FeedView(generic.ListView):
             for j in i.user.posts.all():
                 queryset.append(j)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        kwargs['form'] = self.form()
+        return super().get_context_data(**kwargs)
 
 
 class AddLikeToPostView(generic.View):
@@ -91,5 +100,18 @@ class AddLikeToPostView(generic.View):
         return redirect(self.get_success_url())
 
 
-class AddCommentToPostView(generic.View):
-    pass
+class AddCommentToPostView(View):
+
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER']
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_pk'))
+        if form.is_valid():
+            post.comments.create(
+                text=request.POST.get('text'),
+                post=post,
+                comment_author=post.owner
+            )
+        return redirect(self.get_success_url())

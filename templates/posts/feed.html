@@ -4,7 +4,6 @@
     <div class="container">
         <h1 class="text-center">Feed</h1>
         <a href="{% url 'post_create' %}" class="btn btn-primary w-25 mt-3">Create New Post</a>
-
         {% for post in posts %}
             {% include 'partials/post_detail_partial.html' %}
         {% endfor %}

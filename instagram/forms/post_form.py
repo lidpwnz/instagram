@@ -1,6 +1,6 @@
 from django import forms
 from core.helpers import get_widget_attrs
-from instagram.models import Post
+from instagram.models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
@@ -11,4 +11,19 @@ class PostForm(forms.ModelForm):
             'img': forms.FileInput(attrs=get_widget_attrs()),
             'description': forms.Textarea(attrs=get_widget_attrs()),
             'owner': forms.HiddenInput()
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text', ]
+        # exclude = ['post', 'comment_author']
+        labels = {
+            'text': 'Leave a comment'
+        }
+        widgets = {
+            'text': forms.TextInput(attrs=get_widget_attrs()),
+            'post': forms.HiddenInput(),
+            'comment_author': forms.HiddenInput(),
         }
