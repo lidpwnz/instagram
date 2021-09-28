@@ -239,19 +239,14 @@
                                 <ul class="px-0 py-0">
                                     <li class="gallery-item-likes text-light"><span
                                             class="visually-hidden">Likes:</span>
-                                        <a class="text-light" href="{% url 'add_like' post.pk %}">
+                                        <a class="text-light gallery_item_icon_like text-decoration-none" href="{% url 'add_like' post.pk %}">
                                             <i class="fas fa-heart" aria-hidden="true"></i>
                                         </a>{{ post.users_who_like_it.count }}
                                     </li>
-                                    <li class="gallery-item-comments text-light">
-                                        <span class="visually-hidden">Comments:</span>
-                                        <i class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
-                                    </li>
-                                    <li class="d-block">
-                                        <a href="{% url 'post_detail' post.pk %}" class="text-white">
-                                            to post
+                                    <li class="gallery-item-comments">
+                                        <a href="{% url 'post_detail' post.pk %}" class="text-light gallery_item_icon_comment">
+                                            <i class="fas fa-comment" aria-hidden="true"></i> {{ post.comments_count }}
                                         </a>
-
                                     </li>
                                 </ul>
                             </div>
