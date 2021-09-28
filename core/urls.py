@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from accounts.views import SearchView
+from .helpers import redirect_to_feed
 
 urlpatterns = [
+    path('', redirect_to_feed),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('posts/', include('instagram.urls.post_urls')),

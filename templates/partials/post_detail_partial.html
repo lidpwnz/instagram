@@ -26,40 +26,43 @@
                     {% endif %}
 
                 </a>
-                <i class="far fa-comment fa-rotate-horizontal fa-2x ms-3"></i>
+                <a href="{% url 'post_detail' post.pk %}" class="text-dark">
+                    <i class="far fa-comment fa-rotate-horizontal fa-2x ms-3"></i>
+                </a>
             </div>
             <p class="fw-bold mt-2 fs-6">{{ post.users_who_like_it.count }} users like it</p>
         </div>
         <div class="container">
-        {% if request.get_full_path == '/posts/' %}
-            {% for comment in post.comments.all|slice:":2" %}
-                <div class="d-flex justify-content-between">
-                    <div class="col-9">
-                        <p><strong>{{ comment.comment_author.username }}</strong> {{ comment.text }}</p>
+            {% if request.get_full_path == '/posts/' %}
+                {% for comment in post.comments.all|slice:":2" %}
+                    <div class="d-flex justify-content-between">
+                        <div class="col-9">
+                            <p><strong>{{ comment.comment_author.username }}:</strong> {{ comment.text }}</p>
+                        </div>
+                        <div class="col-2">
+                            {{ comment.created_at|date }}
+                        </div>
                     </div>
-                    <div class="col-2">
-                        {{ comment.created_at|date }}
+                {% endfor %}
+                <a href="{% url 'post_detail' post.pk %}" class="text-secondary">See all comments
+                    ({{ post.comments.count }})</a>
+            {% else %}
+                {% for comment in post.comments.all %}
+                    <div class="d-flex justify-content-between">
+                        <div class="col-9">
+                            <p><strong>{{ comment.comment_author.username }}</strong> {{ comment.text }}</p>
+                        </div>
+                        <div class="col-2">
+                            <small class="text-secondary">{{ comment.created_at|date:'d.m.Y' }}</small>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-            <a href="{% url 'post_detail' post.pk %}" style="color: gray">See all comments ({{ post.comments.count }})</a>
-        {% else %}
-            {% for comment in post.comments.all %}
-                <div class="d-flex justify-content-between">
-                    <div class="col-9">
-                        <p><strong>{{ comment.comment_author.username }}</strong> {{ comment.text }}</p>
-                    </div>
-                    <div class="col-2">
-                        {{ comment.created_at|date }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
-    <hr>
-    <div style="margin-left: 10px">
+        <hr>
+        <div>
 
-        {% include 'partials/comment_create.html' %}
-    </div>
+            {% include 'partials/comment_create.html' %}
+        </div>
     </div>
 </div>

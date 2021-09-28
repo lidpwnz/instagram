@@ -1,11 +1,181 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% include 'partials/links.html' %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Title</title>
 </head>
+<style>
+    .nav-logo {
+        width: 32%;
+    }
+
+    .profile-image {
+        float: left;
+        width: calc(33.333% - 1rem);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 3rem;
+    }
+
+    .profile-image img {
+        border-radius: 50%;
+    }
+
+    .user-avatar {
+        width: 170px;
+        height: 170px;
+    }
+
+    .gallery-item {
+        width: 299px;
+        height: 299px;
+        position: relative;
+        flex: 1 0 22rem;
+        margin: 1rem;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .gallery-item:hover .gallery-item-info,
+    .gallery-item:focus .gallery-item-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery-item-info {
+        display: none;
+    }
+
+    .gallery-item-info li {
+        display: inline-block;
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+    .gallery-image {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .gallery-item-likes {
+        margin-right: 2.2rem;
+    }
+
+    .gallery-item-type {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2.5rem;
+        text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+    }
+
+    .fa-clone,
+    .fa-comment {
+        transform: rotateY(180deg);
+    }
+
+    .gallery-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-edit-btn {
+        font-size: 0.8rem;
+        line-height: 1.8;
+        border: 0.1rem solid #dbdbdb;
+        border-radius: 0.3rem;
+        padding: 0 2.4rem;
+        margin-left: 2rem;
+    }
+
+    .subscribe-btn {
+        font-size: 0.8rem;
+        line-height: 1.8;
+        border: 0.1rem solid #dbdbdb;
+        border-radius: 0.3rem;
+        padding: 0 2.4rem;
+        margin-left: 2rem;
+        background-color: #0095F6;
+        color: white;
+    }
+
+    .post-avatar {
+        width: 40px;
+        height: 40px;
+        padding: 3px;
+    }
+
+    .post_avatar_bg {
+        background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%);
+    }
+
+    .gallery_item_links {
+        height: 100%;
+        position: relative;
+    }
+
+    .gallery_item_links:hover .links {
+        display: flex;
+    }
+
+    .gallery_item_icon {
+        display: inline-flex;
+        margin: 15px;
+        text-decoration: none;
+        align-items: center;
+
+    }
+
+    .gallery_item_icon i {
+        margin: 10px;
+
+    }
+
+
+    .gallery_item_icon:hover i {
+        transition: .3s;
+    }
+
+    .gallery_item_icon_like:hover i {
+        color: palevioletred;
+    }
+
+    .gallery_item_icon_comment:hover i {
+        color: cornflowerblue;
+    }
+
+    .links {
+        display: none;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        list-style: none;
+        font-size: 30px;
+    }
+</style>
 {% include 'partials/navigation.html' %}
 <body>
 <div class="container" id="main_container">
@@ -13,6 +183,8 @@
 
     {% endblock %}
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
+        integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
+        crossorigin="anonymous"></script>
 </body>
 </html>
