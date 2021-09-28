@@ -76,17 +76,17 @@ class AddLikeToPostView(generic.View):
         return self.post(request, *args, **kwargs)
 
     def add_like(self):
-        Like.objects.create(post=self._post, liked_user=self.user_who_likes)
+        Like.objects.create(post=self._post, user=self.user_who_likes)
 
     def remove_like(self):
-        self._post.users_who_like_it.get(liked_user=self.user_who_likes).delete()
+        self._post.users_who_like_it.get(user=self.user_who_likes).delete()
 
     def get_success_url(self):
         return self.request.META.get('HTTP_REFERER', reverse_lazy('feed'))
 
     def set_like(self):
         user_who_likes = self.request.user
-        post_users_pk_list = self._post.users_who_like_it.values_list('liked_user', flat=True)
+        post_users_pk_list = self._post.users_who_like_it.values_list('user', flat=True)
 
         if user_who_likes.pk not in post_users_pk_list:
             self.add_like()

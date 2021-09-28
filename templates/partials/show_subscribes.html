@@ -21,8 +21,10 @@
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ object.user.username }}</td>
-                            <td><a href="{% url 'profile' object.pk %}">Profile</a></td>
+                            <td><a href="{% url 'profile' object.user.pk %}">Profile</a></td>
                         </tr>
+                    {% empty %}
+                        {{ empty_msg | default:'There are no founded' }}
                     {% endfor %}
                     </tbody>
                 </table>
