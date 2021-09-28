@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic, View
 
 from instagram.forms.post_form import PostForm, CommentForm
@@ -28,6 +28,18 @@ class PostDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         kwargs['form'] = self.form()
         return super().get_context_data(**kwargs)
+
+
+class PostUpdateView(generic.UpdateView):
+    model = Post
+    template_name = 'posts/update_post.html'
+    form_class = PostForm
+    pk_url_kwarg = 'post_pk'
+    context_object_name = 'post'
+
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'post_pk': self.object.pk})
+
 
 class PostDeleteView(View):
     def post(self, request, *args, **kwargs):

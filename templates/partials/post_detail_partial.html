@@ -10,7 +10,16 @@
                     {{ post.owner.username }}
                 </a>
             </div>
-
+            {% if request.user == post.owner %}
+                <div>
+                    <a href="#" style="text-decoration: none; color: gray">●●●</a>
+                    <a href="{% url 'post_update' post.pk %}">Update</a>
+                    <form action="{% url 'post_delete' post.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete">
+                    </form>
+                </div>
+            {% endif %}
         </div>
         <a href="{% url 'post_detail' post.pk %}"><img src="{{ post.img.url }}" alt="" class="w-100"></a>
         <div class="card-body">
@@ -31,6 +40,7 @@
                 </a>
             </div>
             <p class="fw-bold mt-2 fs-6">{{ post.users_who_like_it.count }} users like it</p>
+            <p>{{ post.description }}</p>
         </div>
         <div class="container">
             {% if request.get_full_path == '/posts/' %}
