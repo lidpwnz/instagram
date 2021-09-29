@@ -12,13 +12,15 @@ class PostForm(forms.ModelForm):
             'description': forms.Textarea(attrs=get_widget_attrs()),
             'owner': forms.HiddenInput()
         }
+        labels = {
+            'img': 'Image'
+        }
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['text', ]
-        # exclude = ['post', 'comment_author']
         labels = {
             'text': 'Leave a comment'
         }

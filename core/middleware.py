@@ -1,5 +1,3 @@
-import re
-
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
@@ -13,7 +11,7 @@ class MyAuthMiddleware:
 
     def __call__(self, request):  # method that calls to take response
         if not request.user.is_authenticated:
-            if request.path not in self.allowed_path and not re.search('reset', request.path):
+            if request.path not in self.allowed_path:
                 return redirect('login')
 
         return self._get_response(request)

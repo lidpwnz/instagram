@@ -11,13 +11,23 @@
                 </a>
             </div>
             {% if request.user == post.owner %}
-                <div>
-                    <a href="#" style="text-decoration: none; color: gray">●●●</a>
-                    <a href="{% url 'post_update' post.pk %}">Update</a>
-                    <form action="{% url 'post_delete' post.pk %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="Delete">
-                    </form>
+                <div class="dropdown">
+                    <a class="text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a href="{% url 'post_update' post.pk %}" class="dropdown-item">Update</a></li>
+                        <li>
+                            <form action="{% url 'post_delete' post.pk %}" method="post" class="dropdown-item">
+                                {% csrf_token %}
+                                <button type="submit" class="border-0 bg-transparent ps-0 text-danger"
+                                        onclick="return confirm('Are you sure?')">Delete
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             {% endif %}
         </div>
@@ -40,22 +50,26 @@
                 </a>
             </div>
             <input id="showLikeUsersBtn" type="submit" value="{{ post.users_who_like_it.count }} users like it"
-                   class="fw-bold mt-2 fs-6 ps-0 text-decoration-none text-dark border-0 bg-white" data-bs-toggle="modal"
+                   class="fw-bold mt-2 fs-6 ps-0 text-decoration-none text-dark border-0 bg-white"
+                   data-bs-toggle="modal"
                    data-bs-target="#showLikeUsersModal">
-            {% include 'partials/show_subscribes.html' with modal_id='showLikeUsersModal' object_list=post.users_who_like_it.all modal_title='Likes' empty_msg='You have no likes' %}
-
+            {% include 'partials/modal.html' with modal_id='showLikeUsersModal' object_list=post.users_who_like_it.all modal_title='Likes' empty_msg='You have no likes' %}
+            <p class="mt-2">
+                {{ post.description }}
+            </p>
+            <hr>
         </div>
         <div class="container">
             {% if request.get_full_path == '/posts/' %}
                 {% for comment in post.comments.all|slice:":2" %}
                     <div class="d-flex justify-content-between">
                         <div class="col-9">
-                            <p><strong><a
+                            <p><strong><a class="text-decoration-none text-dark"
                                     href="{% url 'profile' comment.comment_author.pk %}">{{ comment.comment_author.username }}</a></strong> {{ comment.text }}
                             </p>
                         </div>
                         <div class="col-2">
-                            {{ comment.created_at|date }}
+                            {{ comment.created_at|date:'d.m.Y' }}
                         </div>
                     </div>
                 {% endfor %}
