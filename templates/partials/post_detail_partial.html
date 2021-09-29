@@ -26,7 +26,7 @@
             <div class="d-flex align-items-center">
                 <a href="{% url 'add_like' post.pk %}" class="text-decoration-none text-dark">
 
-                    {% values post.users_who_like_it.all 'liked_user' flat=True as post_users %}
+                    {% values post.users_who_like_it.all 'user' flat=True as post_users %}
 
                     {% if user.pk not in post_users %}
                         <i id="like-btn" class="far fa-heart fa-2x"></i>
@@ -39,15 +39,20 @@
                     <i class="far fa-comment fa-rotate-horizontal fa-2x ms-3"></i>
                 </a>
             </div>
-            <p class="fw-bold mt-2 fs-6">{{ post.users_who_like_it.count }} users like it</p>
-            <p>{{ post.description }}</p>
+            <input id="showLikeUsersBtn" type="submit" value="{{ post.users_who_like_it.count }} users like it"
+                   class="fw-bold mt-2 fs-6 ps-0 text-decoration-none text-dark border-0 bg-white" data-bs-toggle="modal"
+                   data-bs-target="#showLikeUsersModal">
+            {% include 'partials/show_subscribes.html' with modal_id='showLikeUsersModal' object_list=post.users_who_like_it.all modal_title='Likes' empty_msg='You have no likes' %}
+
         </div>
         <div class="container">
             {% if request.get_full_path == '/posts/' %}
                 {% for comment in post.comments.all|slice:":2" %}
                     <div class="d-flex justify-content-between">
                         <div class="col-9">
-                            <p><strong>{{ comment.comment_author.username }}:</strong> {{ comment.text }}</p>
+                            <p><strong><a
+                                    href="{% url 'profile' comment.comment_author.pk %}">{{ comment.comment_author.username }}</a></strong> {{ comment.text }}
+                            </p>
                         </div>
                         <div class="col-2">
                             {{ comment.created_at|date }}
@@ -60,7 +65,9 @@
                 {% for comment in post.comments.all %}
                     <div class="d-flex justify-content-between">
                         <div class="col-9">
-                            <p><strong>{{ comment.comment_author.username }}</strong> {{ comment.text }}</p>
+                            <p><strong><a class="text-decoration-none text-dark"
+                                          href="{% url 'profile' comment.comment_author.pk %}">{{ comment.comment_author.username }}</a></strong> {{ comment.text }}
+                            </p>
                         </div>
                         <div class="col-2">
                             <small class="text-secondary">{{ comment.created_at|date:'d.m.Y' }}</small>
@@ -71,7 +78,6 @@
         </div>
         <hr>
         <div>
-
             {% include 'partials/comment_create.html' %}
         </div>
     </div>

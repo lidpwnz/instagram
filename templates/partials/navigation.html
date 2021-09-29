@@ -26,6 +26,11 @@
                                 <a href="{% url 'profile' user.pk %}" class="text-dark dropdown-item"><i
                                         class="far fa-user-circle"></i> Profile</a>
                             </li>
+                            <li>
+                                <a href="{% url 'post_create' %}" class="dropdown-item">
+                                    <i class="fab fa-instagram"></i> Add Post
+                                </a>
+                            </li>
                             <li><a class="dropdown-item" href="{% url 'update_user' user.pk %}"><i
                                     class="fas fa-cog"></i> Settings</a></li>
                             <li>
