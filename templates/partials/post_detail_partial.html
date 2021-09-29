@@ -1,0 +1,98 @@
+{% load query_values %}
+
+<div class="container d-flex justify-content-center my-4">
+    <div class="card w-50">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img class="rounded-circle post-avatar post_avatar_bg" src="{{ post.owner.profile.avatar.url }}" alt="">
+                <a href="{% url 'profile' post.owner.pk %}"
+                   class="ms-3 text-decoration-none text-dark fw-bold">
+                    {{ post.owner.username }}
+                </a>
+            </div>
+            {% if request.user == post.owner %}
+                <div class="dropdown">
+                    <a class="text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a href="{% url 'post_update' post.pk %}" class="dropdown-item">Update</a></li>
+                        <li>
+                            <form action="{% url 'post_delete' post.pk %}" method="post" class="dropdown-item">
+                                {% csrf_token %}
+                                <button type="submit" class="border-0 bg-transparent ps-0 text-danger"
+                                        onclick="return confirm('Are you sure?')">Delete
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <a href="{% url 'post_detail' post.pk %}"><img src="{{ post.img.url }}" alt="" class="w-100"></a>
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <a href="{% url 'add_like' post.pk %}" class="text-decoration-none text-dark">
+
+                    {% values post.users_who_like_it.all 'user' flat=True as post_users %}
+
+                    {% if user.pk not in post_users %}
+                        <i id="like-btn" class="far fa-heart fa-2x"></i>
+                    {% else %}
+                        <i id="like-btn" class="fas fa-heart fa-2x"></i>
+                    {% endif %}
+
+                </a>
+                <a href="{% url 'post_detail' post.pk %}" class="text-dark">
+                    <i class="far fa-comment fa-rotate-horizontal fa-2x ms-3"></i>
+                </a>
+            </div>
+            <input id="showLikeUsersBtn" type="submit" value="{{ post.users_who_like_it.count }} users like it"
+                   class="fw-bold mt-2 fs-6 ps-0 text-decoration-none text-dark border-0 bg-white"
+                   data-bs-toggle="modal"
+                   data-bs-target="#showLikeUsersModal">
+            {% include 'partials/modal.html' with modal_id='showLikeUsersModal' object_list=post.users_who_like_it.all modal_title='Likes' empty_msg='You have no likes' %}
+            <p class="mt-2">
+                {{ post.description }}
+            </p>
+            <hr>
+        </div>
+        <div class="container">
+            {% if request.get_full_path == '/posts/' %}
+                {% for comment in post.comments.all|slice:":2" %}
+                    <div class="d-flex justify-content-between">
+                        <div class="col-9">
+                            <p><strong><a class="text-decoration-none text-dark"
+                                    href="{% url 'profile' comment.comment_author.pk %}">{{ comment.comment_author.username }}</a></strong> {{ comment.text }}
+                            </p>
+                        </div>
+                        <div class="col-2">
+                            <small class="text-secondary">{{ comment.created_at|date:'d.m.Y' }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+                <a href="{% url 'post_detail' post.pk %}" class="text-secondary">See all comments
+                    ({{ post.comments.count }})</a>
+            {% else %}
+                {% for comment in post.comments.all %}
+                    <div class="d-flex justify-content-between">
+                        <div class="col-9">
+                            <p><strong><a class="text-decoration-none text-dark"
+                                          href="{% url 'profile' comment.comment_author.pk %}">{{ comment.comment_author.username }}</a></strong> {{ comment.text }}
+                            </p>
+                        </div>
+                        <div class="col-2">
+                            <small class="text-secondary">{{ comment.created_at|date:'d.m.Y' }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <hr>
+        <div>
+            {% include 'partials/comment_create.html' %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'partials/post_detail_partial.html' %}
+
+    <script>
+        $('#showLikeUsersBtn').click(function () {
+            $('#showLikeUsersModal').show()
+        })
+
+        console.log($('#showLikeUsersModal'))
+        console.log($('#showLikeUsersBtn'))
+    </script>
+{% endblock %}

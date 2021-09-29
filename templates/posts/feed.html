@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {% for post in posts %}
+            {% include 'partials/post_detail_partial.html' %}
+        {% empty %}
+            <h1 class="text-center mt-5 pt-5">There are no posts :(</h1>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

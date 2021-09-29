@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="mt-5 mb-3">{{ title | default:'Search results:' }}</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user_obj in users %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'profile' user_obj.pk %}">{{ user_obj.username }}</a></td>
+                <td>{{ user_obj.get_full_name }}</td>
+                <td>{{ user_obj.email }}</td>
+            </tr>
+        {% empty %}
+            <td> <h2> No results </h2></td>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

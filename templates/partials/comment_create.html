@@ -1,0 +1,11 @@
+<form action="{% url 'add_comment' post.pk %}" method="post" class="">
+    {% csrf_token %}
+    <div class="d-flex justify-content-between px-2">
+        <div class="w-100">
+            <input type="text" class="form-control-plaintext" name="text" placeholder="Leave a comment">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary mb-3">Publish</button>
+        </div>
+    </div>
+</form>

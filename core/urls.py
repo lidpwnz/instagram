@@ -13,9 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from accounts.views import SearchView
+from .helpers import redirect_to_feed
 
 urlpatterns = [
+    path('', redirect_to_feed),
     path('admin/', admin.site.urls),
-]
+    path('accounts/', include('accounts.urls')),
+    path('posts/', include('instagram.urls.post_urls')),
+    path('search/', SearchView.as_view(), name='search')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
